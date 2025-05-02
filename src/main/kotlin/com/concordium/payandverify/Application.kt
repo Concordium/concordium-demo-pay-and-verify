@@ -22,6 +22,7 @@ import org.thymeleaf.messageresolver.StandardMessageResolver
 import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import sun.misc.Signal
+import java.math.BigInteger
 import java.util.*
 
 object Application : KoinComponent {
@@ -43,6 +44,7 @@ object Application : KoinComponent {
 
             modules(
                 ioModule,
+                invoiceModule,
             )
         }
 
@@ -85,10 +87,17 @@ object Application : KoinComponent {
                 config.router.apiBuilder {
                     path("/api/v1/") {
                         get { ctx ->
+                            val invoice = get<InvoiceRepository>()
+                                .createInvoice(
+                                    amount = BigInteger.TEN,
+                                    minAgeYears = 18,
+                                )
+
                             ctx.status(HttpStatus.OK)
                             ctx.json(
                                 mapOf(
                                     "status" to "ok",
+                                    "invoice" to invoice,
                                 )
                             )
                         }
