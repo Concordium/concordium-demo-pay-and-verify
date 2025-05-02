@@ -79,6 +79,7 @@ class CreateInvoiceUseCase(
 
         val invoice = Invoice(
             id = UUID.randomUUID().toString(),
+            minAgeYears = minAgeYears,
             amount = amount,
             tokenIndex = storeTokenIndex,
             recipientAccountAddress = storeAccountAddress,

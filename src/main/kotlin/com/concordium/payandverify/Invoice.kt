@@ -5,6 +5,7 @@ import java.math.BigInteger
 data class Invoice(
     val id: String,
     val amount: BigInteger,
+    val minAgeYears: Int,
     val tokenIndex: Int,
     val recipientAccountAddress: String,
     val proofRequestJson: String,
