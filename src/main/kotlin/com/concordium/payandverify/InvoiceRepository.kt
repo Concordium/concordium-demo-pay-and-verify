@@ -13,4 +13,20 @@ class InvoiceRepository {
 
     fun getInvoiceById(id: String): Invoice? =
         invoicesById[id]
+
+    fun updateInvoiceStatusById(
+        id: String,
+        newStatus: Invoice.Status
+    ) {
+        val invoice = getInvoiceById(id)
+            ?: error("Invoice $id not found")
+
+        check(invoice.status is Invoice.Status.Pending) {
+            "Invoice $id is no longer pending"
+        }
+
+        invoicesById[invoice.id] = invoice.copy(
+            status = newStatus,
+        )
+    }
 }

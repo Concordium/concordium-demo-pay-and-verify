@@ -43,8 +43,8 @@ object Application : KoinComponent {
             environmentProperties()
 
             modules(
-                ioModule,
                 invoiceModule,
+                web3IdVerifierModule,
             )
         }
 
@@ -87,8 +87,8 @@ object Application : KoinComponent {
                 config.router.apiBuilder {
                     path("/api/v1/") {
                         get { ctx ->
-                            val invoice = get<InvoiceRepository>()
-                                .createInvoice(
+                            val invoice = get<CreateInvoiceUseCase>()
+                                .invoke(
                                     amount = BigInteger.TEN,
                                     minAgeYears = 18,
                                 )

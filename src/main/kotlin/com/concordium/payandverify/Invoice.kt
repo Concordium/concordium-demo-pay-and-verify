@@ -24,6 +24,6 @@ data class Invoice(
             val proofJson: String,
             val proofVerificationJson: String,
             val transactionHash: String,
-        )
+        ) : Status
     }
 }

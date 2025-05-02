@@ -34,7 +34,7 @@ class CreateInvoiceUseCase(
             .format(DateTimeFormatter.ofPattern("yyyyMMdd"))
 
         log.debug {
-            "createInvoice(): creating:" +
+            "invoke(): creating:" +
                     "\namount=$amount," +
                     "\nminAgeYears=$minAgeYears," +
                     "\ndateOfBirthUpperBound=$dateOfBirthUpperBound"
@@ -90,7 +90,7 @@ class CreateInvoiceUseCase(
         invoiceRepository.addInvoice(invoice)
 
         log.debug {
-            "creteInvoice(): created:" +
+            "invoke(): created:" +
                     "\ninvoice=$invoice"
         }
 
