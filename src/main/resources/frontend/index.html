@@ -1,7 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Checkout</title>
+
+    <script src="static/js/htmx-2.0.4.min.js" data-th-src="@{/static/js/htmx-2.0.4.min.js}"></script>
+</head>
+
 <body>
-<H1>OK</H1>
-<p>Now is <span data-th-text="${time}">time</span></p>
+<h1>Checkout</h1>
+<div data-th-hx-get="@{/invoices/{id}(id=${invoiceId})}"
+     data-hx-trigger="load, every 2s"
+     data-hx-swap="innerHTML">
+    Loading invoice...
+</div>
 </body>
+
 </html>

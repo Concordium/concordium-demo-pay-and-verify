@@ -23,7 +23,6 @@ import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import sun.misc.Signal
 import java.math.BigInteger
-import java.util.*
 
 object Application : KoinComponent {
 
@@ -44,7 +43,7 @@ object Application : KoinComponent {
 
             modules(
                 invoiceModule,
-                web3IdVerifierModule,
+                indexModule,
             )
         }
 
@@ -61,16 +60,8 @@ object Application : KoinComponent {
 
                 config.staticFiles.add("/frontend")
                 config.staticFiles.add { staticFileConfig ->
-                    staticFileConfig.directory = "/frontend/css"
-                    staticFileConfig.hostedPath = "/css"
-                }
-                config.staticFiles.add { staticFileConfig ->
-                    staticFileConfig.directory = "/frontend/js"
-                    staticFileConfig.hostedPath = "/js"
-                }
-                config.staticFiles.add { staticFileConfig ->
-                    staticFileConfig.directory = "/frontend/img"
-                    staticFileConfig.hostedPath = "/img"
+                    staticFileConfig.directory = "/frontend/static"
+                    staticFileConfig.hostedPath = "/static"
                 }
 
                 config.fileRenderer(JavalinThymeleaf(
@@ -104,14 +95,10 @@ object Application : KoinComponent {
                     }
                 }
             }
-            .get("/") { ctx ->
-                ctx.render(
-                    "/index.html",
-                    mapOf(
-                        "time" to Date().toString(),
-                    )
-                )
-            }
+            .get(
+                "/",
+                get<IndexPageController>()::render,
+            )
             .get(
                 "/invoices/{invoiceId}",
                 get<InvoiceStatusPagePartController>()::render,

@@ -49,6 +49,7 @@ class InvoiceStatusPagePartController(
 
         val walletUriQrBase64 = QRCode
             .ofSquares()
+            .withInnerSpacing(0)
             .withErrorCorrectionLevel(ErrorCorrectionLevel.LOW)
             .build(
                 data = walletUri,
