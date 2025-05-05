@@ -1,7 +1,6 @@
 package com.concordium.payandverify
 
 import io.javalin.http.Context
-import io.javalin.http.HttpStatus
 import io.javalin.http.NotFoundResponse
 import okhttp3.HttpUrl
 import qrcode.QRCode
@@ -35,7 +34,9 @@ class InvoiceStatusPagePartController(
                 )
 
             is Invoice.Status.Failed ->
-                TODO()
+                renderFailed(
+                    failedStatus = status,
+                )
         }
     }
 
@@ -93,6 +94,19 @@ class InvoiceStatusPagePartController(
                 "paymentTransactionUrl" to paymentTransactionUrl,
                 "proofVerificationJson" to paidStatus.proofVerificationJson,
                 "proofJson" to paidStatus.proofJson,
+            )
+        )
+    }
+
+    private fun Context.renderFailed(
+        failedStatus: Invoice.Status.Failed,
+    ) {
+        // Send special status code to stop polling.
+        status(286)
+        render(
+            "invoice_failed.html",
+            mapOf(
+                "reason" to failedStatus.reason,
             )
         )
     }
