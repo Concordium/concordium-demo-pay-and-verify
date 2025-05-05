@@ -5,6 +5,7 @@ import io.javalin.http.NotFoundResponse
 import okhttp3.HttpUrl
 import qrcode.QRCode
 import qrcode.raw.ErrorCorrectionLevel
+import java.math.BigDecimal
 import java.net.URLEncoder
 import java.util.*
 
@@ -63,11 +64,24 @@ class InvoiceStatusPagePartController(
             .renderToBytes()
             .let { "data:image/png;base64, " + Base64.getMimeEncoder().encodeToString(it) }
 
+        val amountDecimal: BigDecimal
+        val tokenSymbol: String
+
+        when (val paymentDetails = invoice.paymentDetails) {
+            is Invoice.PaymentDetails.Cis2 -> {
+                amountDecimal = paymentDetails.amount
+                    .toBigDecimal()
+                    .movePointLeft(paymentDetails.tokenDecimals)
+                tokenSymbol = paymentDetails.tokenSymbol
+            }
+        }
+
         render(
             "invoice_pending.html",
             mapOf(
                 "invoiceId" to invoice.id,
-                "amountDecimal" to invoice.amount.toString(),
+                "amountDecimal" to amountDecimal.toPlainString(),
+                "tokenSymbol" to tokenSymbol,
                 "minAgeYears" to invoice.minAgeYears,
                 "walletUri" to walletUri,
                 "walletUriQrBase64" to walletUriQrBase64,
@@ -84,12 +98,25 @@ class InvoiceStatusPagePartController(
             .addPathSegment("transaction")
             .addPathSegment(paidStatus.transactionHash)
 
+        val amountDecimal: BigDecimal
+        val tokenSymbol: String
+
+        when (val paymentDetails = invoice.paymentDetails) {
+            is Invoice.PaymentDetails.Cis2 -> {
+                amountDecimal = paymentDetails.amount
+                    .toBigDecimal()
+                    .movePointLeft(paymentDetails.tokenDecimals)
+                tokenSymbol = paymentDetails.tokenSymbol
+            }
+        }
+
         // Send special status code to stop polling.
         status(286)
         render(
             "invoice_paid.html",
             mapOf(
-                "amountDecimal" to invoice.amount.toString(),
+                "amountDecimal" to amountDecimal.toPlainString(),
+                "tokenSymbol" to tokenSymbol,
                 "minAgeYears" to invoice.minAgeYears,
                 "paymentTransactionUrl" to paymentTransactionUrl,
                 "proofVerificationJson" to paidStatus.proofVerificationJson,

@@ -4,12 +4,12 @@ import io.javalin.http.Context
 import java.math.BigInteger
 
 class IndexPageController(
-    private val createInvoiceUseCase: CreateInvoiceUseCase,
+    private val createCis2InvoiceUseCase: CreateCis2InvoiceUseCase,
 ) {
 
     fun render(context: Context) = with(context) {
 
-        val invoice = createInvoiceUseCase(
+        val invoice = createCis2InvoiceUseCase(
             amount = BigInteger.TEN,
             minAgeYears = 18,
         )

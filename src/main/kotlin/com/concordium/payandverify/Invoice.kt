@@ -4,13 +4,23 @@ import java.math.BigInteger
 
 data class Invoice(
     val id: String,
-    val amount: BigInteger,
+    val paymentDetails: PaymentDetails,
     val minAgeYears: Int,
-    val tokenIndex: Int,
-    val recipientAccountAddress: String,
     val proofRequestJson: String,
     val status: Status,
 ) {
+
+    sealed interface PaymentDetails {
+
+        data class Cis2(
+            val amount: BigInteger,
+            val tokenIndex: Int,
+            val tokenSymbol: String,
+            val tokenContractName: String,
+            val tokenDecimals: Int,
+            val recipientAccountAddress: String,
+        ) : PaymentDetails
+    }
 
     sealed interface Status {
 

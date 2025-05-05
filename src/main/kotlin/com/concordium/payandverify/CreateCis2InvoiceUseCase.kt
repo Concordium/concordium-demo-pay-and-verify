@@ -14,13 +14,16 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class CreateInvoiceUseCase(
+class CreateCis2InvoiceUseCase(
     private val storeTokenIndex: Int,
+    private val storeTokenDecimals: Int,
+    private val storeTokenSymbol: String,
+    private val storeTokenContractName: String,
     private val storeAccountAddress: String,
     private val invoiceRepository: InvoiceRepository,
 ) {
 
-    private val log = KotlinLogging.logger("CreateInvoiceUC")
+    private val log = KotlinLogging.logger("CreateCis2InvoiceUC")
 
     /**
      * Creates a new pending invoice and adds it to the [InvoiceRepository].
@@ -80,10 +83,15 @@ class CreateInvoiceUseCase(
         val invoice = Invoice(
             id = UUID.randomUUID().toString(),
             minAgeYears = minAgeYears,
-            amount = amount,
-            tokenIndex = storeTokenIndex,
-            recipientAccountAddress = storeAccountAddress,
             proofRequestJson = JsonMapper.INSTANCE.writeValueAsString(proofRequest),
+            paymentDetails = Invoice.PaymentDetails.Cis2(
+                amount = amount,
+                tokenIndex = storeTokenIndex,
+                tokenSymbol = storeTokenSymbol,
+                tokenContractName = storeTokenContractName,
+                tokenDecimals = storeTokenDecimals,
+                recipientAccountAddress = storeAccountAddress,
+            ),
             status = Invoice.Status.Pending,
         )
 

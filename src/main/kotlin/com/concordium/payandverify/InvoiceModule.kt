@@ -17,13 +17,17 @@ val invoiceModule = module {
     } bind InvoiceRepository::class
 
     single {
-        CreateInvoiceUseCase(
-            storeTokenIndex = getNotEmptyProperty("STORE_TOKEN_INDEX")
+        CreateCis2InvoiceUseCase(
+            storeTokenIndex = getNotEmptyProperty("STORE_CIS2_TOKEN_INDEX")
                 .toInt(),
+            storeTokenDecimals = getNotEmptyProperty("STORE_CIS2_TOKEN_DECIMALS")
+                .toInt(),
+            storeTokenSymbol = getNotEmptyProperty("STORE_CIS2_TOKEN_SYMBOL"),
+            storeTokenContractName = getNotEmptyProperty("STORE_CIS2_TOKEN_CONTRACT_NAME"),
             storeAccountAddress = getNotEmptyProperty("STORE_ACCOUNT_ADDRESS"),
             invoiceRepository = get(),
         )
-    } bind CreateInvoiceUseCase::class
+    } bind CreateCis2InvoiceUseCase::class
 
     single {
         VerifyPaymentIdProofUseCase(

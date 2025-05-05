@@ -11,7 +11,7 @@ val indexModule = module {
 
     single {
         IndexPageController(
-            createInvoiceUseCase = get(),
+            createCis2InvoiceUseCase = get(),
         )
     } bind IndexPageController::class
 }

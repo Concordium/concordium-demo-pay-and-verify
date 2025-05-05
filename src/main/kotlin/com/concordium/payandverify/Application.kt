@@ -78,7 +78,7 @@ object Application : KoinComponent {
                 config.router.apiBuilder {
                     path("/api/v1/") {
                         get { ctx ->
-                            val invoice = get<CreateInvoiceUseCase>()
+                            val invoice = get<CreateCis2InvoiceUseCase>()
                                 .invoke(
                                     amount = BigInteger.TEN,
                                     minAgeYears = 18,
