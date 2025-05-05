@@ -35,4 +35,12 @@ val invoiceModule = module {
             walletProxyService = get(),
         )
     } bind SubmitPaymentTransactionUseCase::class
+
+    single {
+        AcceptInvoicePaymentUseCase(
+            verifyPaymentIdProofUseCase = get(),
+            submitPaymentTransactionUseCase = get(),
+            invoiceRepository = get(),
+        )
+    } bind AcceptInvoicePaymentUseCase::class
 }
