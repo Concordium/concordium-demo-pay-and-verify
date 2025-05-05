@@ -1,6 +1,7 @@
 package com.concordium.payandverify
 
 import com.concordium.payandverify.util.getNotEmptyProperty
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -43,4 +44,12 @@ val invoiceModule = module {
             invoiceRepository = get(),
         )
     } bind AcceptInvoicePaymentUseCase::class
+
+    single {
+        InvoiceStatusPagePartController(
+            publicRootUrl = getNotEmptyProperty("PUBLIC_URL")
+                .toHttpUrl(),
+            invoiceRepository = get(),
+        )
+    } bind InvoiceStatusPagePartController::class
 }

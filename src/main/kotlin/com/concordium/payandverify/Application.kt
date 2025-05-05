@@ -112,6 +112,10 @@ object Application : KoinComponent {
                     )
                 )
             }
+            .get(
+                "/invoices/{invoiceId}",
+                get<InvoiceStatusPagePartController>()::render,
+            )
             .after { ctx ->
                 ctx.header(Header.SERVER, "concordium-demo-pay-and-verify")
             }
