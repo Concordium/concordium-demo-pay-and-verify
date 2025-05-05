@@ -5,7 +5,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-val web3IdVerifierModule = module {
+val walletProxyModule = module {
 
     includes(
         ioModule,
@@ -13,8 +13,8 @@ val web3IdVerifierModule = module {
 
     single {
         get<Retrofit.Builder>()
-            .baseUrl(getNotEmptyProperty("WEB3ID_VERIFIER_URL"))
+            .baseUrl(getNotEmptyProperty("WALLET_PROXY_URL"))
             .build()
-            .create(Web3IdVerifierService::class.java)
-    } bind Web3IdVerifierService::class
+            .create(WalletProxyService::class.java)
+    } bind WalletProxyService::class
 }

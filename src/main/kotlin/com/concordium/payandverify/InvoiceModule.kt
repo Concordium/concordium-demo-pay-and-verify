@@ -7,8 +7,8 @@ import org.koin.dsl.module
 val invoiceModule = module {
 
     includes(
-        ioModule,
         web3IdVerifierModule,
+        walletProxyModule,
     )
 
     single {
@@ -29,4 +29,10 @@ val invoiceModule = module {
             web3IdVerifierService = get(),
         )
     } bind VerifyPaymentIdProofUseCase::class
+
+    single {
+        SubmitPaymentTransactionUseCase(
+            walletProxyService = get(),
+        )
+    } bind SubmitPaymentTransactionUseCase::class
 }

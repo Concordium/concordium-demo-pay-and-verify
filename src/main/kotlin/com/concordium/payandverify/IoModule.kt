@@ -1,5 +1,6 @@
 package com.concordium.payandverify
 
+import com.concordium.payandverify.util.InMemoryCookieJar
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -25,6 +26,7 @@ val ioModule = module {
             // may run really slow on low-power servers.
             .readTimeout(1, TimeUnit.MINUTES)
             .writeTimeout(1, TimeUnit.MINUTES)
+            .cookieJar(InMemoryCookieJar())
     } bind OkHttpClient.Builder::class
 
     single {
@@ -35,5 +37,6 @@ val ioModule = module {
     factory {
         Retrofit.Builder()
             .addConverterFactory(JacksonConverterFactory.create(get()))
+            .client(get())
     } bind Retrofit.Builder::class
 }
