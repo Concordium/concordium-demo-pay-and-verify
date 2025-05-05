@@ -58,4 +58,10 @@ val invoiceModule = module {
             invoiceRepository = get(),
         )
     } bind InvoiceStatusPagePartController::class
+
+    single {
+        InvoiceApiV1Controller(
+            invoiceRepository = get(),
+        )
+    } bind InvoiceApiV1Controller::class
 }

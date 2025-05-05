@@ -7,7 +7,6 @@ import io.javalin.apibuilder.ApiBuilder.get
 import io.javalin.apibuilder.ApiBuilder.path
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Header
-import io.javalin.http.HttpStatus
 import io.javalin.json.JavalinJackson
 import io.javalin.rendering.template.JavalinThymeleaf
 import io.javalin.router.exception.HttpResponseExceptionMapper
@@ -22,7 +21,6 @@ import org.thymeleaf.messageresolver.StandardMessageResolver
 import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import sun.misc.Signal
-import java.math.BigInteger
 
 object Application : KoinComponent {
 
@@ -76,22 +74,11 @@ object Application : KoinComponent {
                 ))
 
                 config.router.apiBuilder {
-                    path("/api/v1/") {
-                        get { ctx ->
-                            val invoice = get<CreateCis2InvoiceUseCase>()
-                                .invoke(
-                                    amount = BigInteger.TEN,
-                                    minAgeYears = 18,
-                                )
-
-                            ctx.status(HttpStatus.OK)
-                            ctx.json(
-                                mapOf(
-                                    "status" to "ok",
-                                    "invoice" to invoice,
-                                )
-                            )
-                        }
+                    path("/api/v1/invoices") {
+                        get(
+                            "{id}",
+                            get<InvoiceApiV1Controller>()::getInvoiceById,
+                        )
                     }
                 }
             }
@@ -100,7 +87,7 @@ object Application : KoinComponent {
                 get<IndexPageController>()::render,
             )
             .get(
-                "/invoices/{invoiceId}",
+                "/invoices/{id}",
                 get<InvoiceStatusPagePartController>()::render,
             )
             .after { ctx ->

@@ -17,7 +17,7 @@ class InvoiceStatusPagePartController(
 
     fun render(context: Context) = with(context) {
 
-        val invoiceId = pathParam("invoiceId")
+        val invoiceId = pathParam("id")
         val invoice = invoiceRepository
             .getInvoiceById(invoiceId)
             ?: throw NotFoundResponse("Invoice $invoiceId not found")
