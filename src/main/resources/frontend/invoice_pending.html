@@ -1,5 +1,9 @@
-<p>Pay: <span data-th-text="${amountDecimal}">X</span> demoUSD</p>
-<p>Verify: older than <span data-th-text="${minAgeYears}">N</span></p>
+<p><b>⌛ Waiting for payment</b></p>
+
+<ul>
+    <li>Pay: <span data-th-text="${amountDecimal}">X</span> demoUSD</li>
+    <li>Verify: older than <span data-th-text="${minAgeYears}">N</span></li>
+</ul>
 
 <a href="#" data-th-href="${walletUri}">
     <img data-th-src="${walletUriQrBase64}" style="max-width: 250px; max-height: 250px;" alt="Payment QR code"

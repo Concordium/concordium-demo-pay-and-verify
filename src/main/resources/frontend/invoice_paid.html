@@ -1,0 +1,24 @@
+<p><b>✅ Settled</b></p>
+<ul>
+    <li>
+        Paid:
+        <a href="#" target="_blank" data-th-href="${paymentTransactionUrl}">
+            <span data-th-text="${amountDecimal}">X</span> demoUSD
+        </a>
+    </li>
+    <li>
+        Verified age: over <span data-th-text="${minAgeYears}">N</span>
+        <br>
+        <small>
+            <code>
+                <span>Verification result:</span>
+                <br>
+                <span data-th-text="${proofVerificationJson}">{}</span>
+                <br><br>
+                <span>Proof:</span>
+                <br>
+                <span data-th-text="${proofJson}">{}</span>
+            </code>
+        </small>
+    </li>
+</ul>

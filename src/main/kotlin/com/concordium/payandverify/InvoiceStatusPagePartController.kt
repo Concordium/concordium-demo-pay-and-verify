@@ -1,6 +1,7 @@
 package com.concordium.payandverify
 
 import io.javalin.http.Context
+import io.javalin.http.HttpStatus
 import io.javalin.http.NotFoundResponse
 import okhttp3.HttpUrl
 import qrcode.QRCode
@@ -10,6 +11,7 @@ import java.util.*
 
 class InvoiceStatusPagePartController(
     private val publicRootUrl: HttpUrl,
+    private val ccdExplorerRootUrl: HttpUrl,
     private val invoiceRepository: InvoiceRepository,
 ) {
 
@@ -20,14 +22,17 @@ class InvoiceStatusPagePartController(
             .getInvoiceById(invoiceId)
             ?: throw NotFoundResponse("Invoice $invoiceId not found")
 
-        when (invoice.status) {
+        when (val status = invoice.status) {
             Invoice.Status.Pending ->
                 renderPending(
                     invoice = invoice,
                 )
 
             is Invoice.Status.Paid ->
-                TODO()
+                renderPaid(
+                    invoice = invoice,
+                    paidStatus = status,
+                )
 
             is Invoice.Status.Failed ->
                 TODO()
@@ -65,6 +70,29 @@ class InvoiceStatusPagePartController(
                 "minAgeYears" to invoice.minAgeYears,
                 "walletUri" to walletUri,
                 "walletUriQrBase64" to walletUriQrBase64,
+            )
+        )
+    }
+
+    private fun Context.renderPaid(
+        invoice: Invoice,
+        paidStatus: Invoice.Status.Paid,
+    ) {
+        val paymentTransactionUrl = ccdExplorerRootUrl
+            .newBuilder()
+            .addPathSegment("transaction")
+            .addPathSegment(paidStatus.transactionHash)
+
+        // Send special status code to stop polling.
+        status(286)
+        render(
+            "invoice_paid.html",
+            mapOf(
+                "amountDecimal" to invoice.amount.toString(),
+                "minAgeYears" to invoice.minAgeYears,
+                "paymentTransactionUrl" to paymentTransactionUrl,
+                "proofVerificationJson" to paidStatus.proofVerificationJson,
+                "proofJson" to paidStatus.proofJson,
             )
         )
     }

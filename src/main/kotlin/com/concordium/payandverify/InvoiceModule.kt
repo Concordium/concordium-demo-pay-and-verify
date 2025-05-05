@@ -49,6 +49,8 @@ val invoiceModule = module {
         InvoiceStatusPagePartController(
             publicRootUrl = getNotEmptyProperty("PUBLIC_URL")
                 .toHttpUrl(),
+            ccdExplorerRootUrl = getNotEmptyProperty("CCD_EXPLORER_URL")
+                .toHttpUrl(),
             invoiceRepository = get(),
         )
     } bind InvoiceStatusPagePartController::class
