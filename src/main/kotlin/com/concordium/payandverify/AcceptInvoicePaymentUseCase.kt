@@ -1,7 +1,8 @@
 package com.concordium.payandverify
 
-import com.concordium.sdk.transactions.Transaction
+import com.concordium.sdk.transactions.AccountTransaction
 import mu.KotlinLogging
+import java.time.Instant
 
 class AcceptInvoicePaymentUseCase(
     private val verifyPaymentIdProofUseCase: VerifyPaymentIdProofUseCase,
@@ -14,7 +15,7 @@ class AcceptInvoicePaymentUseCase(
     operator fun invoke(
         invoiceId: String,
         proofJson: String,
-        paymentTransaction: Transaction,
+        paymentTransaction: AccountTransaction,
     ): Result = try {
         val invoice = invoiceRepository.getInvoiceById(invoiceId)
             ?: error("Invoice $invoiceId not found")
@@ -29,9 +30,11 @@ class AcceptInvoicePaymentUseCase(
         submitPaymentTransactionUseCase(paymentTransaction)
 
         val paidStatus = Invoice.Status.Paid(
+            paidAt = Instant.now(),
             proofJson = proofJson,
             proofVerificationJson = proofVerificationJson,
             transactionHash = paymentTransactionHash,
+            payerAccountAddress = paymentTransaction.sender.toString(),
         )
 
         invoiceRepository.updateInvoiceStatusById(

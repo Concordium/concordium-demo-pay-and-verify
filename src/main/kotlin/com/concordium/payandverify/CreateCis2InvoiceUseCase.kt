@@ -10,6 +10,7 @@ import com.concordium.sdk.responses.accountinfo.credential.AttributeType
 import com.concordium.sdk.serializing.JsonMapper
 import mu.KotlinLogging
 import java.math.BigInteger
+import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -82,6 +83,7 @@ class CreateCis2InvoiceUseCase(
 
         val invoice = Invoice(
             id = UUID.randomUUID().toString(),
+            createdAt = Instant.now(),
             minAgeYears = minAgeYears,
             proofRequestJson = JsonMapper.INSTANCE.writeValueAsString(proofRequest),
             paymentDetails = Invoice.PaymentDetails.Cis2(

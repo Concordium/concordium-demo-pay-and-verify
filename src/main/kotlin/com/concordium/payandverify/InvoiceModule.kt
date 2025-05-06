@@ -61,6 +61,7 @@ val invoiceModule = module {
 
     single {
         InvoiceApiV1Controller(
+            acceptInvoicePaymentUseCase = get(),
             invoiceRepository = get(),
         )
     } bind InvoiceApiV1Controller::class

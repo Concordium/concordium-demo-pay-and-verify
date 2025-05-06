@@ -1,9 +1,11 @@
 package com.concordium.payandverify
 
 import java.math.BigInteger
+import java.time.Instant
 
 data class Invoice(
     val id: String,
+    val createdAt: Instant,
     val paymentDetails: PaymentDetails,
     val minAgeYears: Int,
     val proofRequestJson: String,
@@ -31,9 +33,11 @@ data class Invoice(
         ) : Status
 
         data class Paid(
+            val paidAt: Instant,
             val proofJson: String,
             val proofVerificationJson: String,
             val transactionHash: String,
+            val payerAccountAddress: String,
         ) : Status
     }
 }
