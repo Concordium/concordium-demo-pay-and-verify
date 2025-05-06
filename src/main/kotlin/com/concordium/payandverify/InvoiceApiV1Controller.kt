@@ -36,9 +36,10 @@ class InvoiceApiV1Controller(
                 },
                 cis2Amount = cis2PaymentDetails?.amount?.toString(),
                 cis2TokenContractName = cis2PaymentDetails?.tokenContractName,
-                cis2TokenContractSymbol = cis2PaymentDetails?.tokenSymbol,
+                cis2TokenSymbol = cis2PaymentDetails?.tokenSymbol,
                 cis2TokenDecimals = cis2PaymentDetails?.tokenDecimals,
-                cis2TokenContractIndex = cis2PaymentDetails?.tokenIndex,
+                cis2TokenContractIndex = cis2PaymentDetails?.tokenContractIndex,
+                cis2RecipientAccountAddress = cis2PaymentDetails?.recipientAccountAddress,
             )
         )
     }
@@ -85,8 +86,9 @@ class InvoiceApiV1Controller(
         val cis2Amount: String?,
         val cis2TokenContractIndex: Int?,
         val cis2TokenContractName: String?,
-        val cis2TokenContractSymbol: String?,
+        val cis2TokenSymbol: String?,
         val cis2TokenDecimals: Int?,
+        val cis2RecipientAccountAddress: String?,
     )
 
     private class InvoicePaymentRequest(

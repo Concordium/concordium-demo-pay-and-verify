@@ -17,7 +17,7 @@ val invoiceModule = module {
 
     single {
         CreateCis2InvoiceUseCase(
-            storeTokenIndex = getNotEmptyProperty("STORE_CIS2_TOKEN_INDEX")
+            storeTokenContractIndex = getNotEmptyProperty("STORE_CIS2_TOKEN_CONTRACT_INDEX")
                 .toInt(),
             storeTokenDecimals = getNotEmptyProperty("STORE_CIS2_TOKEN_DECIMALS")
                 .toInt(),

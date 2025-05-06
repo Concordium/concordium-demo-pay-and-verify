@@ -16,10 +16,10 @@ data class Invoice(
 
         data class Cis2(
             val amount: BigInteger,
-            val tokenIndex: Int,
             val tokenSymbol: String,
-            val tokenContractName: String,
             val tokenDecimals: Int,
+            val tokenContractIndex: Int,
+            val tokenContractName: String,
             val recipientAccountAddress: String,
         ) : PaymentDetails
     }

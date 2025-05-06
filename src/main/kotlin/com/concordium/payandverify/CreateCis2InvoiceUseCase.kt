@@ -16,9 +16,9 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class CreateCis2InvoiceUseCase(
-    private val storeTokenIndex: Int,
     private val storeTokenDecimals: Int,
     private val storeTokenSymbol: String,
+    private val storeTokenContractIndex: Int,
     private val storeTokenContractName: String,
     private val storeAccountAddress: String,
     private val invoiceRepository: InvoiceRepository,
@@ -88,7 +88,7 @@ class CreateCis2InvoiceUseCase(
             proofRequestJson = JsonMapper.INSTANCE.writeValueAsString(proofRequest),
             paymentDetails = Invoice.PaymentDetails.Cis2(
                 amount = amount,
-                tokenIndex = storeTokenIndex,
+                tokenContractIndex = storeTokenContractIndex,
                 tokenSymbol = storeTokenSymbol,
                 tokenContractName = storeTokenContractName,
                 tokenDecimals = storeTokenDecimals,
