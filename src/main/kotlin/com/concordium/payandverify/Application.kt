@@ -41,6 +41,7 @@ object Application : KoinComponent {
             modules(
                 invoiceModule,
                 indexModule,
+                dashboardModule,
             )
         }
 
@@ -92,6 +93,10 @@ object Application : KoinComponent {
             .get(
                 "/invoices/{id}",
                 get<InvoiceStatusPagePartController>()::render,
+            )
+            .get(
+                "/dashboard",
+                get<DashboardPageController>()::render,
             )
             .after { ctx ->
                 ctx.header(Header.SERVER, "concordium-demo-pay-and-verify")

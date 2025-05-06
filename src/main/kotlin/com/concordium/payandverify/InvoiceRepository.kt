@@ -29,4 +29,8 @@ class InvoiceRepository {
             status = newStatus,
         )
     }
+
+    fun getPaid(): List<Invoice> =
+        invoicesById.values
+            .filter { it.status is Invoice.Status.Paid }
 }

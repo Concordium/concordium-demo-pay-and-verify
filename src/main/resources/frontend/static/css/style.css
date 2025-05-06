@@ -6,7 +6,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100dvh;
 }
 
 .card {
@@ -40,4 +40,79 @@ body {
     max-width: 250px;
     height: auto;
     margin: 0 auto 30px;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid grey;
+    scrollbar-width: thin;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    background-color: #f8f8f8;
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+th:last-child {
+    border-right: none;
+}
+
+td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #ddd;
+}
+
+td:last-child {
+    border-right: none;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.checked-value {
+    background-color: #e4f7e4;
+    color: #333;
+    padding: 4px 14px;
+    border-radius: 6px;
+}
+
+.checked-value::after {
+    content: "✓";
+    margin-left: 6px;
+    font-weight: bold;
+}
+
+/* Column minimum widths */
+.col-date {
+    min-width: 140px;
+}
+
+.col-address {
+    min-width: 120px;
+}
+
+.col-check {
+    min-width: 110px;
+}
+
+.col-payment {
+    min-width: 120px;
+}
+
+.col-transaction {
+    min-width: 140px;
 }

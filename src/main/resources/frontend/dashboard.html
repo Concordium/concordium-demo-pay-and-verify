@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="static/css/style.css" data-th-href="@{/static/css/style.css}"/>
+    <script src="static/js/htmx-2.0.4.min.js" data-th-src="@{/static/js/htmx-2.0.4.min.js}"></script>
+</head>
+
+<body>
+
+<div class="card" style="max-width: 900px;">
+    <h1 class="card-title">Dashboard</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th class="col-date">Date</th>
+                <th class="col-address">Address</th>
+                <th class="col-check">Check</th>
+                <th class="col-payment">Payment</th>
+                <th class="col-transaction">Transaction</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-th-each="invoice: ${invoices}">
+                <td>
+                    <script data-th-inline="javascript">
+                        document.write(new Date(/*[[${invoice.utcPaymentTime}]]*/ "2025-05-06T11:21:46.976142200Z").toLocaleString())
+                    </script>
+                </td>
+                <td data-th-text="${invoice.payerAccountAddress}">3iYqU...4s9Cr</td>
+                <td><span class="checked-value">Over <span data-th-text="${invoice.minAgeYears}">18</span></span></td>
+                <td><span data-th-text="${invoice.amountDecimal}">10.00</span> <span data-th-text="${invoice.tokenSymbol}">DemoUSD</span></td>
+                <td><a data-th-href="${invoice.paymentTransactionUrl}" data-th-text="${invoice.paymentTransactionHash}" href="#" target="_blank">39e3b...5929a</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+</div>
+
+</body>
+
+</html>

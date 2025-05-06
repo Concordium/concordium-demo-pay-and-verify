@@ -20,7 +20,7 @@ class InvoiceStatusPagePartController(
             }
 
             is Invoice.Status.Paid -> {
-                header("HX-Redirect", "/success")
+                header("HX-Redirect", "/dashboard")
                 result("Paid, redirecting")
             }
 
