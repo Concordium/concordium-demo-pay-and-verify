@@ -3,8 +3,7 @@ package com.concordium.payandverify
 import com.concordium.payandverify.util.JavalinResponseStatusLogger
 import com.concordium.payandverify.util.KLoggerKoinLogger
 import io.javalin.Javalin
-import io.javalin.apibuilder.ApiBuilder.get
-import io.javalin.apibuilder.ApiBuilder.path
+import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Header
 import io.javalin.json.JavalinJackson
@@ -78,6 +77,10 @@ object Application : KoinComponent {
                         get(
                             "{id}",
                             get<InvoiceApiV1Controller>()::getInvoiceById,
+                        )
+                        post(
+                            "{id}/pay",
+                            get<InvoiceApiV1Controller>()::payInvoiceById,
                         )
                     }
                 }

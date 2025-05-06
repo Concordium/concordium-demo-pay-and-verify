@@ -1,9 +1,16 @@
 package com.concordium.payandverify
 
+import com.concordium.sdk.transactions.BlockItem
+import com.concordium.sdk.transactions.Transaction
+import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
+import io.javalin.http.HttpStatus
 import io.javalin.http.NotFoundResponse
+import okio.ByteString.Companion.decodeHex
+import java.nio.ByteBuffer
 
 class InvoiceApiV1Controller(
+    private val acceptInvoicePaymentUseCase: AcceptInvoicePaymentUseCase,
     private val invoiceRepository: InvoiceRepository,
 ) {
 
@@ -36,6 +43,38 @@ class InvoiceApiV1Controller(
         )
     }
 
+    fun payInvoiceById(context: Context) = with(context) {
+        val paymentRequest = bodyAsClass(InvoicePaymentRequest::class.java)
+
+        val paymentTransaction: Transaction = try {
+            val paymentTransactionBytes = paymentRequest.paymentTransactionHex
+                .decodeHex()
+                .toByteArray()
+            BlockItem.fromVersionedBytes(
+                ByteBuffer
+                    .allocate(paymentTransactionBytes.size + 1)
+                    .put(0)
+                    .put(paymentTransactionBytes)
+            ) as Transaction
+        } catch (e: Exception) {
+            throw BadRequestResponse("Failed decoding payment transaction: ${e.message ?: e}")
+        }
+
+        val result = acceptInvoicePaymentUseCase(
+            invoiceId = pathParam("id"),
+            proofJson = paymentRequest.proofJson,
+            paymentTransaction = paymentTransaction,
+        )
+
+        when (result) {
+            is AcceptInvoicePaymentUseCase.Result.Accepted ->
+                status(HttpStatus.NO_CONTENT)
+
+            is AcceptInvoicePaymentUseCase.Result.Rejected ->
+                throw BadRequestResponse("Payment rejected: ${result.reason}")
+        }
+    }
+
     private class InvoiceResponse(
         val version: Int = 1,
         val id: String,
@@ -48,5 +87,10 @@ class InvoiceApiV1Controller(
         val cis2TokenContractName: String?,
         val cis2TokenContractSymbol: String?,
         val cis2TokenDecimals: Int?,
+    )
+
+    private class InvoicePaymentRequest(
+        val proofJson: String,
+        val paymentTransactionHex: String,
     )
 }
