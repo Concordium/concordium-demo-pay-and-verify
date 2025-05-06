@@ -1,5 +1,7 @@
 package com.concordium.payandverify
 
+import com.concordium.payandverify.util.getNotEmptyProperty
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -11,6 +13,8 @@ val indexModule = module {
 
     single {
         IndexPageController(
+            publicRootUrl = getNotEmptyProperty("PUBLIC_URL")
+                .toHttpUrl(),
             createCis2InvoiceUseCase = get(),
         )
     } bind IndexPageController::class

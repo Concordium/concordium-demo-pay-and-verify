@@ -1,3 +1,43 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
+    background-color: #e6ebef;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card {
+    background-color: white;
+    border-radius: 24px;
+    border: 1px solid grey;
+    padding-left: 40px;
+    padding-right: 40px;
+    width: 85%;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.card-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.invoice-requirements {
+    text-align: left;
+    margin-bottom: 30px;
+    padding-left: 20px;
+}
+
+.invoice-requirements li {
+    margin-bottom: 10px;
+}
+
+.qr-code {
+    max-width: 250px;
+    height: auto;
+    margin: 0 auto 30px;
 }
