@@ -72,7 +72,7 @@ class CreateCis2InvoiceUseCase(
                                             .type(CredentialAttribute.CredentialAttributeType.STRING)
                                             .build()
                                     )
-                                    .attributeTag(JsonMapper.INSTANCE.writeValueAsString(AttributeType.DOB))
+                                    .attributeTag("dob")
                                     .build(),
                             )
                         )
