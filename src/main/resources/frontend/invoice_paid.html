@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Paid successfully</title>
+
+    <link rel="stylesheet" href="static/css/style.css" data-th-href="@{/static/css/style.css}"/>
+    <script src="static/js/htmx-2.0.4.min.js" data-th-src="@{/static/js/htmx-2.0.4.min.js}"></script>
+</head>
+
+<body>
+
+<div class="card" style="max-width: 250px;">
+    <h1 class="card-title">Success!</h1>
+    <p class="card-subtitle">
+        Verification completed:
+        <br><br>
+        <span class="checked-value">Over <span data-th-text="${minAgeYears}">18</span></span>
+    </p>
+    <p class="card-subtitle">
+        Payment completed:
+        <br><br>
+        <span class="checked-value"><span data-th-text="${amountDecimal}">10.00</span> <span data-th-text="${tokenSymbol}">DemoUSD</span></span>
+    </p>
+    <br>
+    <a class="card-subtitle" data-th-href="${paymentTransactionUrl}" target="_blank" href="#">See transaction</a>
+    <br><br><br>
+    <a class="primary-button" data-th-href="@{/invoices/{id}/details(id=${invoiceId})}" href="invoice_details.html">
+        Technical details
+    </a>
+    <br><br><br>
+</div>
+
+</body>
+
+</html>

@@ -3,7 +3,7 @@ package com.concordium.payandverify
 import io.javalin.http.Context
 import io.javalin.http.NotFoundResponse
 
-class InvoiceStatusPagePartController(
+class InvoiceStatusPollController(
     private val invoiceRepository: InvoiceRepository,
 ) {
 
@@ -20,7 +20,7 @@ class InvoiceStatusPagePartController(
             }
 
             is Invoice.Status.Paid -> {
-                header("HX-Redirect", "/dashboard")
+                header("HX-Redirect", "/invoices/$invoiceId")
                 result("Paid, redirecting")
             }
 

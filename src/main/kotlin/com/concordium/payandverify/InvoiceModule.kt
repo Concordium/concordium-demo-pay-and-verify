@@ -1,6 +1,7 @@
 package com.concordium.payandverify
 
 import com.concordium.payandverify.util.getNotEmptyProperty
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -49,10 +50,18 @@ val invoiceModule = module {
     } bind AcceptInvoicePaymentUseCase::class
 
     single {
-        InvoiceStatusPagePartController(
+        InvoiceStatusPollController(
             invoiceRepository = get(),
         )
-    } bind InvoiceStatusPagePartController::class
+    } bind InvoiceStatusPollController::class
+
+    single {
+        InvoicePageController(
+            ccdExplorerRootUrl = getNotEmptyProperty("CCD_EXPLORER_URL")
+                .toHttpUrl(),
+            invoiceRepository = get(),
+        )
+    } bind InvoicePageController::class
 
     single {
         InvoiceApiV1Controller(

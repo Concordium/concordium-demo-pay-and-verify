@@ -92,7 +92,11 @@ object Application : KoinComponent {
             )
             .get(
                 "/invoices/{id}",
-                get<InvoiceStatusPagePartController>()::render,
+                get<InvoicePageController>()::render,
+            )
+            .get(
+                "/invoices/{id}/status",
+                get<InvoiceStatusPollController>()::render,
             )
             .get(
                 "/dashboard",
