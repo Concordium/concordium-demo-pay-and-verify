@@ -116,3 +116,23 @@ tr:last-child td {
 .col-transaction {
     min-width: 140px;
 }
+
+ .primary-button {
+    justify-content: center;
+    background-color: #000;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 400;
+    min-width: 120px;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+}
+
+.primary-button:hover {
+    background-color: #333;
+}
