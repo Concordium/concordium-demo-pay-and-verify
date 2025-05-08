@@ -1,7 +1,10 @@
 package com.concordium.payandverify
 
 import com.concordium.sdk.transactions.AccountTransaction
+import com.concordium.sdk.transactions.BlockItem
+import com.concordium.sdk.transactions.RawTransaction
 import mu.KotlinLogging
+import java.nio.ByteBuffer
 import java.time.Instant
 
 class AcceptInvoicePaymentUseCase(
@@ -15,11 +18,18 @@ class AcceptInvoicePaymentUseCase(
     operator fun invoke(
         invoiceId: String,
         proofJson: String,
-        paymentTransaction: AccountTransaction,
+        paymentTransaction: RawTransaction,
     ): Result = try {
         val invoice = invoiceRepository.getInvoiceById(invoiceId)
             ?: error("Invoice $invoiceId not found")
         val paymentTransactionHash = paymentTransaction.hash.toString()
+        val payerAccountAddress = try {
+            (BlockItem.fromVersionedBytes(ByteBuffer.wrap(paymentTransaction.versionedBytes)) as AccountTransaction)
+                .sender
+                .encoded()
+        } catch (e: Exception) {
+            error("Failed decoding sender address from the paid transaction")
+        }
 
         val proofVerificationJson = verifyPaymentIdProofUseCase(
             proofRequestJson = invoice.proofRequestJson,
@@ -34,7 +44,7 @@ class AcceptInvoicePaymentUseCase(
             proofJson = proofJson,
             proofVerificationJson = proofVerificationJson,
             transactionHash = paymentTransactionHash,
-            payerAccountAddress = paymentTransaction.sender.toString(),
+            payerAccountAddress = payerAccountAddress,
         )
 
         invoiceRepository.updateInvoiceStatusById(
@@ -45,7 +55,8 @@ class AcceptInvoicePaymentUseCase(
         log.debug {
             "invoke(): accepted:" +
                     "\ninvoiceId=$invoiceId," +
-                    "\npaidStatus=$paidStatus"
+                    "\npaidStatus=$paidStatus," +
+                    "\npayerAccountAddress=$payerAccountAddress"
         }
 
         Result.Accepted(

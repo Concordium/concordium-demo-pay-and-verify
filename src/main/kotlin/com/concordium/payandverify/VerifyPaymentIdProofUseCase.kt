@@ -21,13 +21,14 @@ class VerifyPaymentIdProofUseCase(
         paymentTransactionHash: String,
         proofJson: String,
     ): String {
-        val proofVerificationResponse = runBlocking {
-            web3IdVerifierService.verify(
-                proofJsonBody = proofJson.toRequestBody(
-                    contentType = "application/json".toMediaType(),
+        val proofVerificationResponse =
+            web3IdVerifierService
+                .verify(
+                    proofJsonBody = proofJson.toRequestBody(
+                        contentType = "application/json".toMediaType(),
+                    )
                 )
-            )
-        }
+                .execute()
 
         if (!proofVerificationResponse.isSuccessful) {
             val errorBodyBytes = proofVerificationResponse.errorBody()?.bytes()
@@ -42,7 +43,9 @@ class VerifyPaymentIdProofUseCase(
             error("Proof verification failed: $errorString")
         }
 
-        val proofVerificationResponseBodyBytes = proofVerificationResponse.body()
+        val proofVerificationResponseString = proofVerificationResponse
+            .body()
+            ?.string()
             ?: error("Proof verification failed: Verification result has no body")
 
         val unqualifiedRequest = try {
@@ -54,7 +57,7 @@ class VerifyPaymentIdProofUseCase(
 
         val qualifiedRequest = try {
             JsonMapper.INSTANCE
-                .readValue(proofVerificationResponseBodyBytes, QualifiedRequest::class.java)
+                .readValue(proofVerificationResponseString, QualifiedRequest::class.java)
         } catch (e: Exception) {
             error("Failed to decode proof verification response JSON: $e")
         }
@@ -75,6 +78,6 @@ class VerifyPaymentIdProofUseCase(
             "Provided proof doesn't have the payment transaction hash in it's challenge"
         }
 
-        return String(proofVerificationResponseBodyBytes)
+        return proofVerificationResponseString
     }
 }

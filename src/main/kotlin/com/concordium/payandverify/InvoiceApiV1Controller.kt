@@ -1,13 +1,11 @@
 package com.concordium.payandverify
 
-import com.concordium.sdk.transactions.AccountTransaction
-import com.concordium.sdk.transactions.BlockItem
+import com.concordium.sdk.transactions.RawTransaction
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
 import io.javalin.http.HttpStatus
 import io.javalin.http.NotFoundResponse
 import okio.ByteString.Companion.decodeHex
-import java.nio.ByteBuffer
 
 class InvoiceApiV1Controller(
     private val acceptInvoicePaymentUseCase: AcceptInvoicePaymentUseCase,
@@ -47,16 +45,12 @@ class InvoiceApiV1Controller(
     fun payInvoiceById(context: Context) = with(context) {
         val paymentRequest = bodyAsClass(InvoicePaymentRequest::class.java)
 
-        val paymentTransaction: AccountTransaction = try {
-            val paymentTransactionBytes = paymentRequest.paymentTransactionHex
-                .decodeHex()
-                .toByteArray()
-            BlockItem.fromVersionedBytes(
-                ByteBuffer
-                    .allocate(paymentTransactionBytes.size + 1)
-                    .put(0)
-                    .put(paymentTransactionBytes)
-            ) as AccountTransaction
+        val paymentTransaction: RawTransaction = try {
+            RawTransaction.from(
+                paymentRequest.paymentTransactionHex
+                    .decodeHex()
+                    .toByteArray()
+            ) as RawTransaction
         } catch (e: Exception) {
             throw BadRequestResponse("Failed decoding payment transaction: ${e.message ?: e}")
         }
