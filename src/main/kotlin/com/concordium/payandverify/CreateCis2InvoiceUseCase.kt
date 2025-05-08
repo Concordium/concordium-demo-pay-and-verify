@@ -6,7 +6,6 @@ import com.concordium.sdk.crypto.wallet.web3Id.Statement.RangeStatement
 import com.concordium.sdk.crypto.wallet.web3Id.Statement.StatementType
 import com.concordium.sdk.crypto.wallet.web3Id.Statement.UnqualifiedRequestStatement
 import com.concordium.sdk.crypto.wallet.web3Id.UnqualifiedRequest
-import com.concordium.sdk.responses.accountinfo.credential.AttributeType
 import com.concordium.sdk.serializing.JsonMapper
 import mu.KotlinLogging
 import java.math.BigInteger

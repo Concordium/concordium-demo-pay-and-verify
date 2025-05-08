@@ -1,6 +1,7 @@
 package com.concordium.payandverify
 
 import com.concordium.sdk.transactions.Transaction
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -20,5 +21,7 @@ class SubmitPaymentTransactionUseCase(
                     contentType = "application/octet-stream".toMediaType(),
                 )
         )
+
+        delay(1)
     }
 }

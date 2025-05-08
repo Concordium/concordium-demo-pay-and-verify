@@ -12,7 +12,7 @@ class DashboardPageController(
     fun render(context: Context) = with(context) {
 
         val recentlyPaidInvoices = invoiceRepository
-            .getPaid()
+            .getPaidInvoices()
             .sortedByDescending { (it.status as Invoice.Status.Paid).paidAt }
             .take(10)
 
