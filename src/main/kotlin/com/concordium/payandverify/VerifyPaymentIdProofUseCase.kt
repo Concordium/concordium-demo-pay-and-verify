@@ -4,6 +4,7 @@ import com.concordium.sdk.crypto.wallet.web3Id.QualifiedRequest
 import com.concordium.sdk.crypto.wallet.web3Id.Statement.IdQualifier
 import com.concordium.sdk.crypto.wallet.web3Id.UnqualifiedRequest
 import com.concordium.sdk.serializing.JsonMapper
+import com.fasterxml.jackson.databind.JsonNode
 import io.javalin.http.HttpStatus
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
@@ -21,14 +22,14 @@ class VerifyPaymentIdProofUseCase(
         paymentTransactionHash: String,
         proofJson: String,
     ): String {
-        val proofVerificationResponse =
+        val proofVerificationResponse = runBlocking {
             web3IdVerifierService
                 .verify(
                     proofJsonBody = proofJson.toRequestBody(
                         contentType = "application/json".toMediaType(),
                     )
                 )
-                .execute()
+        }
 
         if (!proofVerificationResponse.isSuccessful) {
             val errorBodyBytes = proofVerificationResponse.errorBody()?.bytes()
@@ -43,9 +44,8 @@ class VerifyPaymentIdProofUseCase(
             error("Proof verification failed: $errorString")
         }
 
-        val proofVerificationResponseString = proofVerificationResponse
+        val proofVerificationJson: JsonNode = proofVerificationResponse
             .body()
-            ?.string()
             ?: error("Proof verification failed: Verification result has no body")
 
         val unqualifiedRequest = try {
@@ -57,7 +57,7 @@ class VerifyPaymentIdProofUseCase(
 
         val qualifiedRequest = try {
             JsonMapper.INSTANCE
-                .readValue(proofVerificationResponseString, QualifiedRequest::class.java)
+                .treeToValue(proofVerificationJson, QualifiedRequest::class.java)
         } catch (e: Exception) {
             error("Failed to decode proof verification response JSON: $e")
         }
@@ -78,6 +78,6 @@ class VerifyPaymentIdProofUseCase(
             "Provided proof doesn't have the payment transaction hash in it's challenge"
         }
 
-        return proofVerificationResponseString
+        return proofVerificationJson.toPrettyString()
     }
 }

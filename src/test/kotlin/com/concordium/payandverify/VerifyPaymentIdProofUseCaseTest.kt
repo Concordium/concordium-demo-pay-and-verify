@@ -1,5 +1,7 @@
 package com.concordium.payandverify
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.javalin.http.HttpStatus
 import okhttp3.RequestBody
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -14,10 +16,10 @@ class VerifyPaymentIdProofUseCaseTest {
 
     private fun getVerifier(
         expectedRequest: String,
-        response: Response<ByteArray>,
+        response: Response<JsonNode>,
     ) = object : Web3IdVerifierService {
 
-        override suspend fun verify(proofJsonBody: RequestBody): Response<ByteArray> {
+        override suspend fun verify(proofJsonBody: RequestBody): Response<JsonNode> {
 
             val requestBodyBytes = ByteArrayOutputStream()
                 .also { stream ->
@@ -72,29 +74,27 @@ class VerifyPaymentIdProofUseCaseTest {
 
         val verificationResultJson = """
                 {
-                    "block": "aa8d816cdf2790a9cd1857691cc7491d27e0e85f31f902c80ca90539a69604be",
-                    "blockTime": "2025-05-02T13:55:57.615Z",
-                    "challenge": "4f93b7a5eb91228da1ce07c9da3189dc9ce04f1897d36ae9ddc3129a1bdeee78",
-                    "credentialStatements": [
-                        {
-                            "id": "did:ccd:testnet:cred:b5feb5b11e5d664808a4b656fa90828ef0978a374ec3c608b4cc2029492f3e1305584691c4de2ac04048fa6e4b070dba",
-                            "statement": [
-                                {
-                                    "attributeTag": "dob",
-                                    "lower": "18000101",
-                                    "type": "AttributeInRange",
-                                    "upper": "20070503"
-                                }
-                            ]
-                        }
-                    ]
+                  "block" : "aa8d816cdf2790a9cd1857691cc7491d27e0e85f31f902c80ca90539a69604be",
+                  "blockTime" : "2025-05-02T13:55:57.615Z",
+                  "challenge" : "4f93b7a5eb91228da1ce07c9da3189dc9ce04f1897d36ae9ddc3129a1bdeee78",
+                  "credentialStatements" : [ {
+                    "id" : "did:ccd:testnet:cred:b5feb5b11e5d664808a4b656fa90828ef0978a374ec3c608b4cc2029492f3e1305584691c4de2ac04048fa6e4b070dba",
+                    "statement" : [ {
+                      "attributeTag" : "dob",
+                      "lower" : "18000101",
+                      "type" : "AttributeInRange",
+                      "upper" : "20070503"
+                    } ]
+                  } ]
                 }
-                """.trimIndent()
+                """
+            .trimIndent()
+            .let(jacksonObjectMapper()::readTree)
+
 
         val verifier = getVerifier(
             expectedRequest = proofJson,
             response = verificationResultJson
-                .toByteArray()
                 .let { Response.success(it) },
         )
 
@@ -110,7 +110,7 @@ class VerifyPaymentIdProofUseCaseTest {
         Assert.assertEquals(
             "Returned JSON must be the one from the verifier",
             verificationResultJson,
-            resultJson
+            resultJson.let(jacksonObjectMapper()::readTree)
         )
     }
 
@@ -221,7 +221,7 @@ class VerifyPaymentIdProofUseCaseTest {
         val verifier = getVerifier(
             expectedRequest = proofJson,
             response = verificationResultJson
-                .toByteArray()
+                .let(jacksonObjectMapper()::readTree)
                 .let { Response.success(it) },
         )
 
@@ -292,7 +292,7 @@ class VerifyPaymentIdProofUseCaseTest {
         val verifier = getVerifier(
             expectedRequest = proofJson,
             response = verificationResultJson
-                .toByteArray()
+                .let(jacksonObjectMapper()::readTree)
                 .let { Response.success(it) },
         )
 
