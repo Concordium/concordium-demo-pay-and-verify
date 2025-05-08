@@ -8,6 +8,11 @@ class InvoiceRepository {
         check(!invoicesById.containsKey(invoice.id)) {
             "This invoice is already added"
         }
+
+        if (invoicesById.size > 1000) {
+            invoicesById.clear()
+        }
+
         invoicesById[invoice.id] = invoice
     }
 
@@ -30,7 +35,7 @@ class InvoiceRepository {
         )
     }
 
-    fun getPaid(): List<Invoice> =
+    fun getPaidInvoices(): List<Invoice> =
         invoicesById.values
             .filter { it.status is Invoice.Status.Paid }
 }
