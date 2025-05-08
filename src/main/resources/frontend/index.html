@@ -5,7 +5,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>Checkout</title>
+    <title>Verify and pay</title>
 
     <link rel="stylesheet" href="static/css/style.css" data-th-href="@{/static/css/style.css}"/>
     <script src="static/js/htmx-2.0.4.min.js" data-th-src="@{/static/js/htmx-2.0.4.min.js}"></script>
@@ -14,10 +14,10 @@
 <body>
 
 <div class="card" style="max-width: 250px;">
-    <h1 class="card-title">Scan to enter</h1>
-    <p class="card-subtitle">To gain access you will need to:</p>
+    <h1 class="card-title">Verify and pay</h1>
+    <p class="card-subtitle">In order to access <span data-th-text="${storeName}">ccd.show</span> please:</p>
     <ul class="invoice-requirements">
-        <li>Pay <span data-th-text="${amountDecimal}">10.00</span> <span data-th-text="${tokenSymbol}">DemoUSD</span>
+        <li>Pay $<span data-th-text="${amountDecimal}">10.00</span>
         </li>
         <li>Verify that you are <span data-th-text="${minAgeYears}">18</span>+ years old</li>
     </ul>

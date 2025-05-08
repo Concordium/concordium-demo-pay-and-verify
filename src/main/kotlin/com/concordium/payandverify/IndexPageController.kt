@@ -63,6 +63,7 @@ class IndexPageController(
                 "minAgeYears" to invoice.minAgeYears,
                 "walletUri" to walletUri,
                 "walletUriQrBase64" to walletUriQrBase64,
+                "storeName" to publicRootUrl.host,
             )
         )
     }
