@@ -15,6 +15,8 @@ val indexModule = module {
         IndexPageController(
             publicRootUrl = getNotEmptyProperty("PUBLIC_URL")
                 .toHttpUrl(),
+            storeTokenDecimals = getNotEmptyProperty("STORE_CIS2_TOKEN_DECIMALS")
+                .toInt(),
             createCis2InvoiceUseCase = get(),
         )
     } bind IndexPageController::class

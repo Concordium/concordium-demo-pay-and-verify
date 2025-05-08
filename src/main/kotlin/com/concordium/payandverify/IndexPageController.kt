@@ -11,13 +11,14 @@ import java.util.*
 
 class IndexPageController(
     private val publicRootUrl: HttpUrl,
+    private val storeTokenDecimals: Int,
     private val createCis2InvoiceUseCase: CreateCis2InvoiceUseCase,
 ) {
 
     fun render(context: Context) = with(context) {
 
         val invoice = createCis2InvoiceUseCase(
-            amount = BigInteger.TEN,
+            amount = BigInteger.TEN.pow(storeTokenDecimals),
             minAgeYears = 18,
         )
 
