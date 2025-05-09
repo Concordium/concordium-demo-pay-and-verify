@@ -9,29 +9,100 @@
 
     <link rel="stylesheet" href="static/css/style.css" data-th-href="@{/static/css/style.css}"/>
     <script src="static/js/htmx-2.0.4.min.js" data-th-src="@{/static/js/htmx-2.0.4.min.js}"></script>
+
+    <style data-th-inline="css">
+        body {
+            background: #EBF0F0 url(/*[[@{/static/img/confetti.png}]]*/ "static/img/confetti.png") no-repeat center center;
+            background-size: cover;
+        }
+
+        .card {
+            padding-bottom: 40px;
+            z-index: 10;
+        }
+
+        #success-animation {
+            width: 104px;
+            height: 104px;
+            margin: 0 auto;
+        }
+
+        .card-title {
+            margin-top: 32px;
+        }
+
+        .card-subtitle {
+            margin-top: 32px;
+        }
+
+        .checked-value {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .technical-details {
+            margin-top: 48px;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="card" style="max-width: 250px;">
+<div class="card" style="max-width: 350px;">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <div id="success-animation">
+        <dotlottie-player
+                style="width: 100%; height: 100%"
+                src="static/js/tx_success.lottie"
+                data-th-src="@{/static/js/tx_success.lottie}"
+                background="transparent"
+                speed="1" direction="1"
+                playMode="normal"
+                autoplay>
+        </dotlottie-player>
+    </div>
     <h1 class="card-title">Success!</h1>
     <p class="card-subtitle">
+        <img alt="OK"
+             class="inline-icon"
+             style="margin-right: 6px"
+             src="static/img/magnifying_glass.svg"
+             data-th-src="@{/static/img/magnifying_glass.svg}"/>
         Verification completed:
-        <br><br>
-        <span class="checked-value">Over <span data-th-text="${minAgeYears}">18</span></span>
+        <br>
+        <span class="checked-value">
+            Over <span data-th-text="${minAgeYears}">18</span>
+            <img alt="OK" src="static/img/check.svg" data-th-src="@{/static/img/check.svg}"/>
+        </span>
     </p>
     <p class="card-subtitle">
+        <img alt="OK"
+             class="inline-icon"
+             style="margin-right: 6px"
+             src="static/img/dollar.svg"
+             data-th-src="@{/static/img/dollar.svg}"/>
         Payment completed:
-        <br><br>
-        <span class="checked-value"><span data-th-text="${amountDecimal}">10.00</span> <span data-th-text="${tokenSymbol}">DemoUSD</span></span>
+        <br>
+        <span class="checked-value">
+            <span data-th-text="${amountDecimal}">10.00</span>
+            <span data-th-text="${tokenSymbol}">DemoUSD</span>
+            <img alt="OK" src="static/img/check.svg" data-th-src="@{/static/img/check.svg}"/>
+        </span>
     </p>
-    <br>
-    <a class="card-subtitle" data-th-href="${paymentTransactionUrl}" target="_blank" href="#">See transaction</a>
-    <br><br><br>
-    <a class="primary-button" data-th-href="@{/invoices/{id}/details(id=${invoiceId})}" href="invoice_paid_details.html">
-        Technical details
-    </a>
-    <br><br><br>
+    <p class="card-subtitle">
+        <img alt="Link"
+             class="inline-icon"
+             style="margin-right: 6px"
+             src="static/img/link.svg"
+             data-th-src="@{/static/img/link.svg}"/>
+        <a data-th-href="${paymentTransactionUrl}" target="_blank" href="#">See transaction</a>
+    </p>
+    <div class="technical-details">
+        <a class="primary-button" data-th-href="@{/invoices/{id}/details(id=${invoiceId})}"
+           href="invoice_paid_details.html">
+            Technical details
+        </a>
+    </div>
 </div>
 
 </body>
