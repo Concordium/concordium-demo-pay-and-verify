@@ -1,5 +1,6 @@
 package com.concordium.payandverify
 
+import com.concordium.sdk.serializing.JsonMapper
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.javalin.http.HttpStatus
@@ -73,20 +74,7 @@ class VerifyPaymentIdProofUseCaseTest {
             """.trimIndent()
 
         val verificationResultJson = """
-                {
-                  "block" : "aa8d816cdf2790a9cd1857691cc7491d27e0e85f31f902c80ca90539a69604be",
-                  "blockTime" : "2025-05-02T13:55:57.615Z",
-                  "challenge" : "4f93b7a5eb91228da1ce07c9da3189dc9ce04f1897d36ae9ddc3129a1bdeee78",
-                  "credentialStatements" : [ {
-                    "id" : "did:ccd:testnet:cred:b5feb5b11e5d664808a4b656fa90828ef0978a374ec3c608b4cc2029492f3e1305584691c4de2ac04048fa6e4b070dba",
-                    "statement" : [ {
-                      "attributeTag" : "dob",
-                      "lower" : "18000101",
-                      "type" : "AttributeInRange",
-                      "upper" : "20070503"
-                    } ]
-                  } ]
-                }
+                {"challenge":"4f93b7a5eb91228da1ce07c9da3189dc9ce04f1897d36ae9ddc3129a1bdeee78","credentialStatements":[{"statement":[{"type":"AttributeInRange","lower":"18000101","upper":"20070503","attributeTag":"dob"}],"id":"did:ccd:testnet:cred:b5feb5b11e5d664808a4b656fa90828ef0978a374ec3c608b4cc2029492f3e1305584691c4de2ac04048fa6e4b070dba","statementType":"cred","type":null}]}
                 """
             .trimIndent()
             .let(jacksonObjectMapper()::readTree)
@@ -98,7 +86,7 @@ class VerifyPaymentIdProofUseCaseTest {
                 .let { Response.success(it) },
         )
 
-        val resultJson = VerifyPaymentIdProofUseCase(
+        val result = VerifyPaymentIdProofUseCase(
             web3IdVerifierService = verifier,
         )
             .invoke(
@@ -110,7 +98,7 @@ class VerifyPaymentIdProofUseCaseTest {
         Assert.assertEquals(
             "Returned JSON must be the one from the verifier",
             verificationResultJson,
-            resultJson.let(jacksonObjectMapper()::readTree)
+            JsonMapper.INSTANCE.valueToTree(result)
         )
     }
 
