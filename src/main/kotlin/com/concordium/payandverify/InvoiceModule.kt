@@ -50,12 +50,6 @@ val invoiceModule = module {
     } bind AcceptInvoicePaymentUseCase::class
 
     single {
-        InvoiceStatusPollController(
-            invoiceRepository = get(),
-        )
-    } bind InvoiceStatusPollController::class
-
-    single {
         InvoicePageController(
             ccdExplorerRootUrl = getNotEmptyProperty("CCD_EXPLORER_URL")
                 .toHttpUrl(),

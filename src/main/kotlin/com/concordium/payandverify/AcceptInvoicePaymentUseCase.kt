@@ -1,5 +1,9 @@
 package com.concordium.payandverify
 
+import com.concordium.sdk.crypto.wallet.web3Id.QualifiedRequest
+import com.concordium.sdk.crypto.wallet.web3Id.Statement.RangeStatement
+import com.concordium.sdk.crypto.wallet.web3Id.Statement.RequestStatement
+import com.concordium.sdk.serializing.JsonMapper
 import com.concordium.sdk.transactions.AccountTransaction
 import com.concordium.sdk.transactions.BlockItem
 import com.concordium.sdk.transactions.RawTransaction
@@ -31,7 +35,7 @@ class AcceptInvoicePaymentUseCase(
             error("Failed decoding sender address from the paid transaction")
         }
 
-        val proofVerificationJson = verifyPaymentIdProofUseCase(
+        val proofVerificationResult: QualifiedRequest = verifyPaymentIdProofUseCase(
             proofRequestJson = invoice.proofRequestJson,
             proofJson = proofJson,
             paymentTransactionHash = paymentTransactionHash,
@@ -42,9 +46,23 @@ class AcceptInvoicePaymentUseCase(
         val paidStatus = Invoice.Status.Paid(
             paidAt = Instant.now(),
             proofJson = proofJson,
-            proofVerificationJson = proofVerificationJson,
+            proofVerificationJson = JsonMapper.INSTANCE.writeValueAsString(proofVerificationResult),
             transactionHash = paymentTransactionHash,
             payerAccountAddress = payerAccountAddress,
+            proofSummary = proofVerificationResult
+                .credentialStatements
+                .flatMap(RequestStatement::getStatement)
+                .joinToString(
+                    transform = { statement ->
+                        when (statement) {
+                            is RangeStatement ->
+                                "${statement.attributeTag} before ${statement.upper.value}"
+
+                            else ->
+                                JsonMapper.INSTANCE.writeValueAsString(statement)
+                        }
+                    }
+                )
         )
 
         invoiceRepository.updateInvoiceStatusById(

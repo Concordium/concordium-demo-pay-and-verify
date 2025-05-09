@@ -15,13 +15,13 @@ class VerifyPaymentIdProofUseCase(
 ) {
 
     /**
-     * @return proof verification result JSON (qualified request) if it is valid.
+     * @return proof verification result (qualified request) if it is valid.
      */
     operator fun invoke(
         proofRequestJson: String,
         paymentTransactionHash: String,
         proofJson: String,
-    ): String {
+    ): QualifiedRequest {
         val proofVerificationResponse = runBlocking {
             web3IdVerifierService
                 .verify(
@@ -78,6 +78,6 @@ class VerifyPaymentIdProofUseCase(
             "Provided proof doesn't have the payment transaction hash in it's challenge"
         }
 
-        return proofVerificationJson.toPrettyString()
+        return qualifiedRequest
     }
 }

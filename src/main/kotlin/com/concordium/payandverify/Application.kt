@@ -74,6 +74,7 @@ object Application : KoinComponent {
                 ))
 
                 config.router.apiBuilder {
+
                     path("/api/v1/invoices") {
                         get(
                             "{id}",
@@ -84,24 +85,35 @@ object Application : KoinComponent {
                             get<InvoiceApiV1Controller>()::payInvoiceById,
                         )
                     }
+
+                    get(
+                        "/",
+                        get<IndexPageController>()::render,
+                    )
+
+                    get(
+                        "/dashboard",
+                        get<DashboardPageController>()::render,
+                    )
+
+                    path("/invoices") {
+                        get(
+                            "{id}",
+                            get<InvoicePageController>()::render,
+                        )
+
+                        get(
+                            "{id}/details",
+                            get<InvoicePageController>()::renderDetails,
+                        )
+
+                        get(
+                            "{id}/status",
+                            get<InvoicePageController>()::renderStatus,
+                        )
+                    }
                 }
             }
-            .get(
-                "/",
-                get<IndexPageController>()::render,
-            )
-            .get(
-                "/invoices/{id}",
-                get<InvoicePageController>()::render,
-            )
-            .get(
-                "/invoices/{id}/status",
-                get<InvoiceStatusPollController>()::render,
-            )
-            .get(
-                "/dashboard",
-                get<DashboardPageController>()::render,
-            )
             .after { ctx ->
                 ctx.header(Header.SERVER, "concordium-demo-pay-and-verify")
             }

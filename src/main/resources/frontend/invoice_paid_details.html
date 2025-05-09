@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Payment details</title>
+
+    <link rel="stylesheet" href="static/css/style.css" data-th-href="@{/static/css/style.css}"/>
+    <script src="static/js/htmx-2.0.4.min.js" data-th-src="@{/static/js/htmx-2.0.4.min.js}"></script>
+</head>
+
+<body>
+
+<div class="card" style="max-width: 900px; text-align: start;">
+    <br><br>
+    <a class="primary-button" data-th-href="@{/invoices/{id}(id=${invoiceId})}" href="invoice_paid.html">
+        🠔 Back
+    </a>
+    <br><br><br>
+    <h2>ZK-Proof: <span data-th-text="${proofSummary}">user-born-before 2007-05-03</span></h2>
+    <br>
+    <p class="card-subtitle">
+        Using a zero-knowledge proof the user has verified that they are above 18,
+        without revealing personal information such as their birthdate.
+    </p>
+    <p class="card-subtitle">
+        User data is kept private, while the verifier (website) can rest assured that the claim is true.
+    </p>
+    <br>
+    <div class="code-container">
+        <code data-th-text="${technicalDetails}">
+            ...
+        </code>
+    </div>
+    <br><br><br>
+</div>
+
+</body>
+
+</html>

@@ -36,6 +36,7 @@ data class Invoice(
             val paidAt: Instant,
             val proofJson: String,
             val proofVerificationJson: String,
+            val proofSummary: String,
             val transactionHash: String,
             val payerAccountAddress: String,
         ) : Status

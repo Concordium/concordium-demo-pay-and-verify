@@ -1,5 +1,6 @@
 package com.concordium.payandverify
 
+import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
 import io.javalin.http.NotFoundResponse
 import okhttp3.HttpUrl
@@ -53,6 +54,64 @@ class InvoicePageController(
                         "amountDecimal" to amountDecimal.toPlainString(),
                         "tokenSymbol" to tokenSymbol,
                         "minAgeYears" to invoice.minAgeYears,
+                    )
+                )
+            }
+        }
+    }
+
+    fun renderStatus(context: Context) = with(context) {
+
+        val invoiceId = pathParam("id")
+        val invoice = invoiceRepository
+            .getInvoiceById(invoiceId)
+            ?: throw NotFoundResponse("Invoice $invoiceId not found")
+
+        when (val status = invoice.status) {
+            Invoice.Status.Pending -> {
+                result("Pending")
+            }
+
+            is Invoice.Status.Paid -> {
+                header("HX-Redirect", "/invoices/$invoiceId")
+                result("Paid, redirecting")
+            }
+
+            is Invoice.Status.Failed -> {
+                result("Rejected: ${status.reason}")
+            }
+        }
+    }
+
+    fun renderDetails(context: Context) = with(context) {
+
+        val invoiceId = pathParam("id")
+        val invoice = invoiceRepository.getInvoiceById(invoiceId)
+            ?: throw NotFoundResponse("Invoice $invoiceId not found")
+
+        when (val status = invoice.status) {
+            Invoice.Status.Pending,
+            is Invoice.Status.Failed -> {
+                throw BadRequestResponse("No details")
+            }
+
+            is Invoice.Status.Paid -> {
+
+                render(
+                    "invoice_paid_details.html",
+                    mapOf(
+                        "invoiceId" to invoiceId,
+                        "proofSummary" to status.proofSummary,
+                        "technicalDetails" to """
+                            Transaction hash:
+                            ${status.transactionHash}
+                            
+                            Proof:
+                            ${status.proofJson}
+                            
+                            Proof verification result:
+                            ${status.proofVerificationJson}
+                        """.trimIndent()
                     )
                 )
             }
