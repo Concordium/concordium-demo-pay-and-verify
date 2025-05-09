@@ -9,13 +9,22 @@
 
     <link rel="stylesheet" href="static/css/style.css" data-th-href="@{/static/css/style.css}"/>
     <script src="static/js/htmx-2.0.4.min.js" data-th-src="@{/static/js/htmx-2.0.4.min.js}"></script>
+
+    <style>
+        .card {
+            padding: 32px;
+        }
+        .card-title {
+            margin-bottom: 32px;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="card" style="max-width: 250px;">
     <h1 class="card-title">Verify and pay</h1>
-    <p class="card-subtitle">In order to access <span data-th-text="${storeName}">ccd.show</span> please:</p>
+    <p class="card-subtitle">In order to enter <span data-th-text="${storeName}">ccd.show</span> please:</p>
     <ul class="invoice-requirements">
         <li>Pay $<span data-th-text="${amountDecimal}">10.00</span>
         </li>

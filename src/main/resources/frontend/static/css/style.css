@@ -23,12 +23,12 @@ body {
 .card-title {
     font-size: 36px;
     font-weight: bold;
-    margin-bottom: 16px;
+    margin: 0;
 }
 
 .invoice-requirements {
     text-align: left;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
     padding-left: 20px;
 }
 
@@ -39,7 +39,6 @@ body {
 .qr-code {
     max-width: 250px;
     height: auto;
-    margin: 0 auto 30px;
 }
 
 .table-container {
@@ -129,7 +128,6 @@ tr:last-child td {
     min-width: 120px;
     cursor: pointer;
     border: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.2s;
 }
 
