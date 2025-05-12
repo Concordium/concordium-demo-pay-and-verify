@@ -23,6 +23,7 @@ val invoiceModule = module {
             storeTokenDecimals = getNotEmptyProperty("STORE_CIS2_TOKEN_DECIMALS")
                 .toInt(),
             storeTokenSymbol = getNotEmptyProperty("STORE_CIS2_TOKEN_SYMBOL"),
+            storeTokenId = getProperty("STORE_CIS2_TOKEN_ID", ""),
             storeTokenContractName = getNotEmptyProperty("STORE_CIS2_TOKEN_CONTRACT_NAME"),
             storeAccountAddress = getNotEmptyProperty("STORE_ACCOUNT_ADDRESS"),
             invoiceRepository = get(),

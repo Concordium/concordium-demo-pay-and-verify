@@ -17,6 +17,7 @@ import java.util.*
 class CreateCis2InvoiceUseCase(
     private val storeTokenDecimals: Int,
     private val storeTokenSymbol: String,
+    private val storeTokenId: String,
     private val storeTokenContractIndex: Int,
     private val storeTokenContractName: String,
     private val storeAccountAddress: String,
@@ -89,6 +90,7 @@ class CreateCis2InvoiceUseCase(
                 amount = amount,
                 tokenContractIndex = storeTokenContractIndex,
                 tokenSymbol = storeTokenSymbol,
+                tokenId = storeTokenId,
                 tokenContractName = storeTokenContractName,
                 tokenDecimals = storeTokenDecimals,
                 recipientAccountAddress = storeAccountAddress,
