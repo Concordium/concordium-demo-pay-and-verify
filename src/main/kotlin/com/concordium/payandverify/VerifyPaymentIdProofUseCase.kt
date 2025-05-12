@@ -38,6 +38,7 @@ class VerifyPaymentIdProofUseCase(
                     && errorBodyBytes != null
                 )
                     String(errorBodyBytes)
+                        .trim('"')
                 else
                     "Unsuccessful verification result: ${proofVerificationResponse.code()}"
 
