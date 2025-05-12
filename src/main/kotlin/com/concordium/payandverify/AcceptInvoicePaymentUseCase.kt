@@ -41,6 +41,9 @@ class AcceptInvoicePaymentUseCase(
             paymentTransactionHash = paymentTransactionHash,
         )
 
+        // In a real payment service,
+        // the transaction of course must be validated as well.
+
         submitPaymentTransactionUseCase(paymentTransaction)
 
         val paidStatus = Invoice.Status.Paid(
