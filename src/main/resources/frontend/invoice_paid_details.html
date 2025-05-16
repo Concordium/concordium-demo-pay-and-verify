@@ -12,8 +12,16 @@
     <link rel="shortcut icon" data-th-href="@{/favicon.ico}" href="favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" data-th-href="@{/static/img/apple-touch-icon.png}" href="static/img/apple-touch-icon.png" />
 
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/css/style.css" data-th-href="@{/static/css/style.css}"/>
     <script src="static/js/htmx-2.0.4.min.js" data-th-src="@{/static/js/htmx-2.0.4.min.js}"></script>
+
+    <style>
+        h2 {
+            margin-top: 72px;
+            font-weight: 500;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,12 +39,13 @@
             Back
         </a>
     </div>
-    <h2 style="margin-top: 72px;">ZK-Proof: <span data-th-text="${proofSummary}">user-born-before 2007-05-03</span></h2>
+    <h2>ZK-Proof: <span data-th-text="${proofSummary}">user-born-before 2007-05-03</span></h2>
     <br>
     <p class="card-subtitle">
         Using a zero-knowledge proof the user has verified that they are above 18,
         without revealing personal information such as their birthdate.
     </p>
+    <br>
     <p class="card-subtitle">
         User data is kept private, while the verifier (website) can rest assured that the claim is true.
     </p>
