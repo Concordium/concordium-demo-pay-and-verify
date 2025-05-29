@@ -24,6 +24,8 @@ A JSON object with the following fields:
 
 - `version` – int, invoice version, currently `1`
 - `id` – string, invoice identifier
+- `minAgeYears` – int, minimum age of the payer required by the store (e.g. `18`)
+- `proofRequestJson` – string, a stringified JSON of the identity proof request (unqualified request) the payer must prove. It contains the date of birth range check corresponding to `minAgeYears`
 - `status` – string, one of the invoice statuses:
     - `"pending"` – invoice is created and waiting to be paid
     - `"paid"` – invoice is paid and verified successfully
